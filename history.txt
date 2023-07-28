@@ -1,0 +1,5 @@
+28.07.2023
+- Implemented base OpenId connect authentication with Auth Server(IdentityService) and test client. Client is a gateway which uses access token from Auth Server to authenticate and authorize user.
+- Gateway is Client and Resource Server in a same time and now it only has Test endpoint.
+- Added Dockerfile for IdentityService which using in docker-compose file.
+- There's a elastic, rabbitmq and kibana images in docker-compose. But for now it's commented

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterSheet.IdentityService.Api", "CharacterSheet.IdentityService.Api.csproj", "{989114CB-BB0F-483F-9B49-3A54154FB238}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{989114CB-BB0F-483F-9B49-3A54154FB238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{989114CB-BB0F-483F-9B49-3A54154FB238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{989114CB-BB0F-483F-9B49-3A54154FB238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{989114CB-BB0F-483F-9B49-3A54154FB238}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A31815AE-C208-42A9-B0DE-0876E6F216B0}
+	EndGlobalSection
+EndGlobal
