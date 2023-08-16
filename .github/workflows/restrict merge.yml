@@ -1,0 +1,26 @@
+name: Restrict Merge to Main from Allowed Branches
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - edited
+    branches:
+      - main
+
+env:
+  # Branches should be separated with commas (without spaces)
+  ALLOWED_BRANCHES: "development"
+
+jobs:
+  restrict_merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          source_branch="${{ github.event.pull_request.head.ref }}"
+          if [[ ! ",${ALLOWED_BRANCHES}," =~ ",${source_branch}," ]]; then
+            echo "Pull requests to main must be opened from one of the allowed branches: $ALLOWED_BRANCHES"
+            exit 1
+          fi
