@@ -1,0 +1,15 @@
+name: 'Allow merge only from development'
+
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - main
+
+jobs:
+  verify_compare_branch:
+    if: !contains(fromJSON('["development"]'), github.head_ref)
+    runs-on: ubuntu-latest
+    uses: cutenode/action-always-fail@v1.0.1
+    
