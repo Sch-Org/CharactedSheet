@@ -6,10 +6,14 @@ on:
       - opened
     branches:
       - main
+env:
+  ALLOWED_BRANCHES: ${{ fromJSON('["development"]') }}
 
 jobs:
   verify_compare_branch:
-    if: !contains(fromJSON('["development"]'), github.head_ref)
+    if: contains(ALLOWED_BRANCHES, github.event_name)
     runs-on: ubuntu-latest
-    uses: cutenode/action-always-fail@v1.0.1
+    steps:
+      - name: format('You can make PR tp main only from this branches: {0}', join(ALLOWED_BRANCHES, ', '))
+        run: exit 1
     
