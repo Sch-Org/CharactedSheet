@@ -10,7 +10,8 @@ on:
       - main
 
 env:
-  ALLOWED_BRANCHES: '["development"]'
+  # Branches should be separated with commas (without spaces)
+  ALLOWED_BRANCHES: "development"
 
 jobs:
   restrict_merge:
@@ -18,9 +19,8 @@ jobs:
     steps:
       - name: Check source branch
         run: |
-          allowed_branches=(${ALLOWED_BRANCHES//,/ })
           source_branch="${{ github.event.pull_request.head.ref }}"
-          if [[ ! " ${allowed_branches[@]} " =~ " ${source_branch} " ]]; then
+          if [[ ! ",${ALLOWED_BRANCHES}," =~ ",${source_branch}," ]]; then
             echo "Pull requests to main must be opened from one of the allowed branches: $ALLOWED_BRANCHES"
             exit 1
           fi
