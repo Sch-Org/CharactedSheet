@@ -7,14 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+var identityBaseUrl = builder.Configuration.GetValue<string>("IDENTITY_BASE_URL");
+
+Console.WriteLine(identityBaseUrl);
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => 
     {
-        options.Authority = "http://localhost:5001";
+        options.Authority = identityBaseUrl;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
-            ValidIssuer = "http://localhost:5001"
+            ValidIssuer = identityBaseUrl
         };
         options.RequireHttpsMetadata = false;
     });

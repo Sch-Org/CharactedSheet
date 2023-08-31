@@ -1,3 +1,8 @@
+31.08.2023
+- Added custom claims to access token
+- Added DockerFile to Gateway
+- Added env vars for identity url
+
 28.07.2023
 - Implemented base OpenId connect authentication with Auth Server(IdentityService) and test client. Client is a gateway which uses access token from Auth Server to authenticate and authorize user.
 - Gateway is Client and Resource Server in a same time and now it only has Test endpoint.

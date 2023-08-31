@@ -7,7 +7,7 @@ public static class IdentityConfig
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("gateway", "Api Gateway")
+            new ApiScope("gateway", "Api Gateway", new[] { "email" })
         };
 
     public static IEnumerable<Client> Clients =>
@@ -16,12 +16,13 @@ public static class IdentityConfig
             new Client 
             {
                 ClientId = "client",
-                AllowedGrantTypes = new List<string> { GrantType.ClientCredentials, "refresh_token" },
+                AllowedGrantTypes = new List<string> { "custom" },
                 ClientSecrets = 
                 {
                     new Secret("client_secret".Sha256())
                 },
-                AllowedScopes = { "gateway" }
+                AllowedScopes = { "gateway" },
+                AlwaysIncludeUserClaimsInIdToken = true
             }
         };
 }

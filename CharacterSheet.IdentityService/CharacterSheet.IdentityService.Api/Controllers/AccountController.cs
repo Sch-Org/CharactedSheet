@@ -55,10 +55,13 @@ public class AccountController : ControllerBase
     }
 
     [HttpPost("signin")]
-    public async Task<string> SignIn([FromBody] SignInRequest request, [FromServices] UserManager<IdentityUser> userManager)
+    public async Task<string> SignIn([FromBody] SignInRequest request, [FromServices] UserManager<IdentityUser> userManager, [FromServices] IConfiguration configuration)
     {
         try
         {
+            var callUrl = configuration["IDENTITY_CALL_URL"];
+
+            Console.WriteLine($"\n\n\n\n\n\n\n\nCALL_URL: {callUrl}\n\n\n\n\n");
             var user = await userManager.FindByEmailAsync(request.Login);
             if (user != null)
             {
@@ -68,13 +71,14 @@ public class AccountController : ControllerBase
                     using (var httpClient = new HttpClient())
                     {
                         var client = IdentityConfig.Clients.FirstOrDefault();
-                        httpClient.BaseAddress = new Uri("http://localhost:5001");
+                        httpClient.BaseAddress = new Uri(callUrl);
                         var requestContent = new List<KeyValuePair<string, string>>
                         {
                             new KeyValuePair<string, string>("client_id", client.ClientId),
                             new KeyValuePair<string, string>("client_secret", "client_secret"),
                             new KeyValuePair<string, string>("scope", "gateway"),
-                            new KeyValuePair<string, string>("grant_type", GrantType.ClientCredentials)
+                            new KeyValuePair<string, string>("grant_type", "custom"),
+                            new KeyValuePair<string, string>("user_id", user.Id)
                         };
                         var requestMessage = new HttpRequestMessage(HttpMethod.Post, "connect/token")
                         {

@@ -1,9 +1,12 @@
+using CharacterSheet.IdentityService.Api;
 using CharacterSheet.IdentityService.Api.Config;
 using CharacterSheet.IdentityService.Api.Data;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +19,8 @@ builder.Services.AddDbContext<IdentityContext>(config =>
     config.UseInMemoryDatabase("IdentityDb");
 });
 
+builder.Services.AddTransient<IProfileService, ProfileService>();
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
 {
     config.Password.RequireNonAlphanumeric = false;
@@ -26,20 +31,31 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(config =>
     .AddEntityFrameworkStores<IdentityContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddIdentityServer()
+var baseUrl = builder.Configuration.GetValue<string>("IDENTITY_BASE_URL");
+var callUrl = builder.Configuration.GetValue<string>("IDENTITY_CALL_URL");
+
+builder.Services.AddIdentityServer(config => 
+    {
+        config.IssuerUri = baseUrl;
+    })
     .AddAspNetIdentity<IdentityUser>()
     .AddDeveloperSigningCredential()
+    .AddExtensionGrantValidator<CustomGrantTypeValidator>()
     .AddInMemoryApiScopes(IdentityConfig.ApiScopes)
-    .AddInMemoryClients(IdentityConfig.Clients);
+    .AddInMemoryClients(IdentityConfig.Clients)
+    .AddProfileService<ProfileService>();
+
+Console.WriteLine($"####################### BASE URL: {baseUrl}\n\n\n\n\n\n\n\n\n");
+Console.WriteLine($"####################### CALL URL: {callUrl}\n\n\n\n\n\n\n\n\n");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => 
     {
-        options.Authority = "http://localhost:5001";
+        options.Authority = baseUrl;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = false,
-            ValidIssuer = "http://localhost:5001"
+            ValidIssuer = baseUrl
         };
         options.RequireHttpsMetadata = false;
     });

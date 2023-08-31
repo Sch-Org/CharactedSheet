@@ -31,6 +31,16 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "5001:80"
-networks:
-  elastic:
-  message-bus:
+    environment:
+      - IDENTITY_BASE_URL=http://localhost:5001
+      - IDENTITY_CALL_URL=http://host.docker.internal:5001
+  gateway:
+    image: gatewaty
+    container_name: gateway
+    build:
+      context: CharacterSheet.Gateway
+      dockerfile: ./Dockerfile
+    ports:
+      - "5002:80"
+    environment:
+      - IDENTITY_BASE_URL=http://localhost:5001
